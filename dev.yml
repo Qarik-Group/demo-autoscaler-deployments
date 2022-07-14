@@ -1,0 +1,15 @@
+---
+kit:
+  name:    cf-app-autoscaler
+  version: 4.0.2
+  features:
+    - (( append ))
+    - postgres
+
+genesis:
+  env:            dev
+  min_version:    2.7.9
+
+params:
+  cf_deployment_env:  dev
+  cf_deployment_type: cf
