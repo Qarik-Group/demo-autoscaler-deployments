@@ -13,3 +13,4 @@ genesis:
 params:
   cf_deployment_env:  dev
   cf_deployment_type: cf
+  cf_core_network: default
