@@ -11,6 +11,6 @@ genesis:
   min_version:    2.7.9
 
 params:
-  cf_deployment_env:  dev
+  cf_deployment_env:  uswest2demo
   cf_deployment_type: cf
-  cf_core_network: default
+  cf_core_network:    default
