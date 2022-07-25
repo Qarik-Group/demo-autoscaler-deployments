@@ -1,0 +1,70 @@
+pipeline:
+  name: cf-app-autoscaler-platform-pipeline
+  git:
+    owner: starkandwayne
+    repo:  demo-autoscaler-deployments
+    private_key: (( vault "concourse/demo/autoscaler/github:private_key" ))
+
+#  notifications: parallel
+
+  slack:
+    channel: '#concourse'
+    webhook: 'https://hooks.slack.com/services/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'
+
+#  email:
+#    stanza: here
+
+  vault:
+    url:    https://10.4.1.7
+    verify: no
+    role:   (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))
+    secret: (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))
+
+#  locker:
+    
+
+  boshes:
+    dev:
+      url:      https://10.4.16.4:25555
+      ca_cert:  (( vault "secret/dev/bosh/ssl/ca:certificate" ))
+      username: admin
+      password: (( vault "secret/dev/bosh/users/admin:password" ))
+
+    uswest2demo:
+      url:      https://10.4.1.4:25555
+      ca_cert:  (( vault "secret/uswest2demo/bosh/ssl/ca:certificate" ))
+      username: admin
+      password: (( vault "secret/uswest2demo/bosh/users/admin:password" ))
+
+#  smoke-tests: run-my-smoke-tests
+#  tagged: yes
+
+  layouts:
+    # genesis repipe                 ; if target is 'default'
+    # genesis repipe -t azure        ; if target is 'azure' instead
+    default: |+
+      auto *dev
+      dev -> uswest2demo
+
+    # genesis repipe onprem          ; if target is 'onprem'
+    # genesis repipe -t ci onprem    ; if it is 'ci' instead
+#    onprem: |+
+#      auto *sandbox *preprod
+#      on-prem-1-sandbox -> on-prem-1-preprod -> on-prem-1-prod
+#      on-prem-2-sandbox -> on-prem-2-preprod -> on-prem-2-prod
+
+#  groups:
+#    default:
+#    - sandbox
+#    - preprod
+#    - prod
+
+#    onprem1:
+#    - on-prem-1-sandbox
+#    - on-prem-1-preprod
+#    - on-prem-1-prod
+
+#    onprem2:
+#    - on-prem-2-sandbox
+#    - on-prem-2-preprod
+#    - on-prem-2-prod
