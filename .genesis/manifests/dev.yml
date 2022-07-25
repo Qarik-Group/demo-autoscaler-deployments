@@ -1,0 +1,1925 @@
+addons:
+- jobs:
+  - name: bosh-dns-aliases
+    properties:
+      aliases:
+      - domain: autoscalerpostgres.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: postgres_autoscaler
+          network: REDACTED
+          query: '*'
+      - domain: apiserver.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: asapi
+          network: REDACTED
+          query: '*'
+      - domain: autoscalerscheduler.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: asactors
+          network: REDACTED
+          query: '*'
+      - domain: servicebroker.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: asapi
+          network: REDACTED
+          query: '*'
+      - domain: eventgenerator.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: asmetrics
+          network: REDACTED
+          query: '*'
+      - domain: scalingengine.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: asactors
+          network: REDACTED
+          query: '*'
+      - domain: reverse-log-proxy.service.cf.internal
+        targets:
+        - deployment: dev-cf
+          domain: bosh
+          instance_group: log-api
+          network: REDACTED
+          query: '*'
+      - domain: metricsgateway.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: asnozzle
+          network: REDACTED
+          query: '*'
+      - domain: metricsserver.service.cf.internal
+        targets:
+        - deployment: dev-cf-app-autoscaler
+          domain: bosh
+          instance_group: asmetrics
+          network: REDACTED
+          query: '*'
+      - domain: nats.service.cf.internal
+        targets:
+        - deployment: dev-cf
+          domain: bosh
+          instance_group: nats
+          network: REDACTED
+          query: '*'
+      - domain: _.nats.service.cf.internal
+        targets:
+        - deployment: dev-cf
+          domain: bosh
+          instance_group: nats
+          network: REDACTED
+          query: _
+    release: bosh-dns-aliases
+  name: bosh-dns-aliases
+- jobs:
+  - name: bpm
+    release: bpm
+  name: bpm
+azs:
+- cloud_properties:
+    availability_zone: us-west-2a
+  name: z1
+- cloud_properties:
+    availability_zone: us-west-2b
+  name: z2
+- cloud_properties:
+    availability_zone: us-west-2c
+  name: z3
+bosh-variables:
+  cf_client_id: REDACTED
+  cf_client_secret: REDACTED
+  loggregator_ca:
+    certificate: REDACTED
+  loggregator_tls_agent:
+    ca: REDACTED
+    certificate: REDACTED
+    private_key: REDACTED
+  loggregator_tls_rlp:
+    certificate: REDACTED
+    private_key: REDACTED
+  skip_ssl_validation: "true"
+  system_domain: REDACTED
+compilation:
+  az: z1
+  network: default
+  reuse_compilation_vms: true
+  vm_type: large
+  workers: 5
+disk_types:
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 2048
+  name: default
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 2048
+  name: consul
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 10240
+  name: concourse
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 4096
+  name: postgres
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 4096
+  name: blobstore
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 1024
+  name: vault
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 65536
+  name: bosh
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 131072
+  name: bosh-large
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 2048
+  name: shield
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 51200
+  name: prometheus
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 4096
+  name: rabbitmq
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 5120
+  name: 5GB
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 10240
+  name: 10GB
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 100240
+  name: 100GB
+- cloud_properties:
+    encrypted: true
+    type: gp3
+  disk_size: 10240
+  name: minio
+exodus:
+  app-autoscaler-release-date: 2022-Apr-10 09:04:18 UTC
+  app-autoscaler-release-version: 5.1.0
+  autoscaler_api_domain: autoscaler.REDACTED
+  autoscaler_metrics_domain: autoscalermetrics.REDACTED
+  bosh: dev
+  cf_deployment_env: dev
+  cf_deployment_type: cf
+  dated: 2022-07-25 08:38:48 +0000
+  deployer: unknown
+  features: postgres
+  is_director: false
+  kit_is_dev: false
+  kit_name: cf-app-autoscaler
+  kit_version: 4.0.2
+  service_broker_domain: autoscalerservicebroker.REDACTED
+  service_broker_password: ((autoscaler_service_broker_password))
+  service_broker_username: autoscaler_service_broker_user
+  use_create_env: false
+  vault_base: /secret/dev/cf-app-autoscaler
+  version: 2.8.5
+features:
+  use_dns_addresses: true
+genesis:
+  ci_mount: /secret/ci/
+  env: dev
+  exodus_mount: /secret/exodus/
+  exodus_path: dev/cf-app-autoscaler
+  min_version: 2.7.9
+  secrets_mount: /secret/
+  secrets_path: dev/cf-app-autoscaler
+instance_groups:
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: postgres
+    properties:
+      databases:
+        connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        databases:
+        - name: autoscaler
+          tag: default
+        db_scheme: postgres
+        port: 5432
+        roles:
+        - name: postgres
+          password: ((database_password))
+          tag: default
+        sslmode: verify-full
+        tls:
+          ca: ((postgres_ca.ca))
+          certificate: ((postgres_server.certificate))
+          private_key: ((postgres_server.private_key))
+    release: postgres
+  name: postgres_autoscaler
+  networks:
+  - name: REDACTED
+  persistent_disk_type: 10GB
+  stemcell: default
+  update:
+    serial: true
+  vm_type: small
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: scalingengine
+    properties:
+      autoscaler:
+        cf:
+          api: https://api.((system_domain))
+          client_id: ((cf_client_id))
+          grant_type: client_credentials
+          secret: ((cf_client_secret))
+          skip_ssl_validation: ((skip_ssl_validation))
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        policy_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        scalingengine:
+          ca_cert: ((scalingengine_ca.ca))
+          defaultCoolDownSecs: 300
+          health:
+            password: ((autoscaler_scalingengine_health_password))
+            port: 6204
+            username: scalingengine
+          http_client_timeout: 60s
+          lockSize: 32
+          logging:
+            level: info
+          server:
+            port: 6104
+          server_cert: ((scalingengine_server.certificate))
+          server_key: ((scalingengine_server.private_key))
+        scalingengine_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        scalingengine_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        scheduler_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        scheduler_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+    release: app-autoscaler
+  - name: scheduler
+    properties:
+      autoscaler:
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        scheduler:
+          ca_cert: ((scheduler_ca.ca))
+          health:
+            basicAuthEnabled: true
+            password: ((autoscaler_scheduler_health_password))
+            port: 6202
+            username: scheduler
+          http_client_timeout: 60
+          job_reschedule_interval_millisecond: 10000
+          job_reschedule_maxcount: 6
+          notification_reschedule_maxcount: 3
+          port: 6102
+          scaling_engine:
+            ca_cert: ((scalingengine_ca.ca))
+            client_cert: ((scalingengine_client.certificate))
+            client_key: ((scalingengine_client.private_key))
+          server_cert: ((scheduler_server.certificate))
+          server_key: ((scheduler_server.private_key))
+        scheduler_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+    release: app-autoscaler
+  - name: operator
+    properties:
+      autoscaler:
+        appmetrics_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        appmetrics_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        cf:
+          api: https://api.((system_domain))
+          client_id: ((cf_client_id))
+          grant_type: client_credentials
+          secret: ((cf_client_secret))
+          skip_ssl_validation: ((skip_ssl_validation))
+        instancemetrics_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        instancemetrics_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        lock_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        lock_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        operator:
+          app_sync_interval: 24h
+          db_lock:
+            retry_interval: 5s
+            ttl: 15s
+          health:
+            password: ((autoscaler_operator_health_password))
+            port: 6208
+            username: operator
+          http_client_timeout: 60s
+          logging:
+            level: info
+          scaling_engine:
+            ca_cert: ((scalingengine_ca.ca))
+            client_cert: ((scalingengine_client.certificate))
+            client_key: ((scalingengine_client.private_key))
+            port: 6104
+          scheduler:
+            ca_cert: ((scheduler_ca.ca))
+            client_cert: ((scheduler_client.certificate))
+            client_key: ((scheduler_client.private_key))
+            port: 6102
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        policy_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        scalingengine_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        scalingengine_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+    release: app-autoscaler
+  - consumes:
+      nats:
+        deployment: dev-cf
+        from: nats
+    name: route_registrar
+    properties:
+      route_registrar:
+        routes:
+        - name: autoscaler_scalingengine_health
+          port: 6204
+          registration_interval: 20s
+          tags:
+            component: autoscaler_scalingengine_health
+          uris:
+          - autoscaler-scalingengine.((system_domain))
+        - name: autoscaler_operator_health
+          port: 6208
+          registration_interval: 20s
+          tags:
+            component: autoscaler_operator_health
+          uris:
+          - autoscaler-operator.((system_domain))
+        - name: autoscaler_scheduler_health
+          port: 6202
+          registration_interval: 20s
+          tags:
+            component: autoscaler_scheduler_health
+          uris:
+          - autoscaler-scheduler.((system_domain))
+    release: routing
+  name: asactors
+  networks:
+  - name: REDACTED
+  stemcell: default
+  update:
+    max_in_flight: 1
+    serial: true
+  vm_type: minimal
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: metricsserver
+    properties:
+      autoscaler:
+        instancemetrics_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        instancemetrics_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        metricsserver:
+          ca_cert: ((metricsserver_server.ca))
+          collector:
+            collect_interval: 60s
+            envelope_channel_size: 1000
+            envelope_processor_count: 5
+            keep_alive_time: 60s
+            metric_cache_size_per_app: 1000
+            metric_channel_size: 1000
+            persist_metrics: true
+            port: 7103
+            refresh_interval: 60s
+            save_interval: 5s
+          health:
+            password: ((autoscaler_metricsserver_health_password))
+            port: 6303
+            username: metricsserver
+          http_client_timeout: 60s
+          logging:
+            level: info
+          server:
+            port: 6103
+          server_cert: ((metricsserver_server.certificate))
+          server_key: ((metricsserver_server.private_key))
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        policy_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+    release: app-autoscaler
+  - name: eventgenerator
+    properties:
+      autoscaler:
+        appmetrics_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        appmetrics_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        eventgenerator:
+          aggregator:
+            aggregator_execute_interval: 40s
+            app_metric_channel_size: 1000
+            app_monitor_channel_size: 200
+            metric_poller_count: 20
+            policy_poller_interval: 60s
+            save_interval: 5s
+          ca_cert: ((eventgenerator_ca.ca))
+          circuitBreaker:
+            back_off_initial_interval: 5m
+            back_off_max_interval: 120m
+            consecutive_failure_count: 5
+          defaultBreachDurationSecs: 120
+          defaultStatWindowSecs: 120
+          evaluator:
+            evaluation_manager_execute_interval: 60s
+            evaluator_count: 20
+            trigger_array_channel_size: 200
+          health:
+            password: ((autoscaler_eventgenerator_health_password))
+            port: 6205
+            username: eventgenerator
+          http_client_timeout: 60s
+          logging:
+            level: info
+          metricscollector:
+            ca_cert: ((metricsserver_ca.ca))
+            client_cert: ((metricsserver_client.certificate))
+            client_key: ((metricsserver_client.private_key))
+            host: metricsserver.service.cf.internal
+            port: 6103
+          scaling_engine:
+            ca_cert: ((scalingengine_ca.ca))
+            client_cert: ((scalingengine_client.certificate))
+            client_key: ((scalingengine_client.private_key))
+            host: scalingengine.service.cf.internal
+            port: 6104
+          server:
+            port: 6105
+          server_cert: ((eventgenerator_server.certificate))
+          server_key: ((eventgenerator_server.private_key))
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        policy_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+    release: app-autoscaler
+  - consumes:
+      nats:
+        deployment: dev-cf
+        from: nats
+    name: route_registrar
+    properties:
+      route_registrar:
+        routes:
+        - name: autoscaler_eventgenerator_health
+          port: 6205
+          registration_interval: 20s
+          tags:
+            component: autoscaler_eventgenerator_health
+          uris:
+          - autoscaler-eventgenerator.((system_domain))
+        - name: autoscaler_metricsserver_health
+          port: 6303
+          registration_interval: 20s
+          tags:
+            component: autoscaler_metricsserver_health
+          uris:
+          - autoscaler-metricsserver.((system_domain))
+    release: routing
+  name: asmetrics
+  networks:
+  - name: REDACTED
+  stemcell: default
+  update:
+    max_in_flight: 1
+    serial: true
+  vm_type: small
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: metricsgateway
+    properties:
+      autoscaler:
+        metricsgateway:
+          app_manager:
+            app_refresh_interval: 5s
+          emitter:
+            buffer_size: 500
+            handshake_timeout: 1s
+            keep_alive_interval: 5s
+            max_close_retry_count: 3
+            max_setup_retry_count: 3
+            metricsserver_client:
+              ca_cert: ((metricsserver_client.ca))
+              cert: ((metricsserver_client.certificate))
+              key: ((metricsserver_client.private_key))
+            retry_delay: 1s
+          envelop_chan_size: 1000
+          health:
+            password: ((autoscaler_metricsgateway_health_password))
+            port: 6503
+            username: metricsgateway
+          logging:
+            level: info
+          nozzle:
+            loggregator_rlp_tls:
+              ca_cert: ((loggregator_ca.certificate))
+              cert: ((loggregator_tls_rlp.certificate))
+              key: ((loggregator_tls_rlp.private_key))
+            rlp_addr: reverse-log-proxy.service.cf.internal:8082
+            shard_id: CF_AUTOSCALER
+          nozzle_count: 3
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        policy_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+    release: app-autoscaler
+  - consumes:
+      nats:
+        deployment: dev-cf
+        from: nats
+    name: route_registrar
+    properties:
+      route_registrar:
+        routes:
+        - name: autoscaler_metricsgateway_health
+          port: 6503
+          registration_interval: 20s
+          tags:
+            component: autoscaler_metricsgateway_health
+          uris:
+          - autoscaler-metricsgateway.((system_domain))
+    release: routing
+  name: asnozzle
+  networks:
+  - name: REDACTED
+  stemcell: default
+  update:
+    max_in_flight: 1
+    serial: true
+  vm_type: small
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: golangapiserver
+    properties:
+      autoscaler:
+        apiserver:
+          broker:
+            password: ((autoscaler_service_broker_password))
+            server:
+              catalog:
+                services:
+                - bindable: true
+                  description: Automatically increase or decrease the number of application
+                    instances based on a policy you define.
+                  id: autoscaler-guid
+                  name: autoscaler
+                  plans:
+                  - description: This is the free service plan for the Auto-Scaling
+                      service.
+                    id: autoscaler-free-plan-id
+                    name: autoscaler-free-plan
+              dashboard_redirect_uri: ""
+              port: 6102
+            username: autoscaler_service_broker_user
+          event_generator:
+            ca_cert: ((eventgenerator_ca.ca))
+            client_cert: ((eventgenerator_client.certificate))
+            client_key: ((eventgenerator_client.private_key))
+          logging:
+            level: info
+          metrics_collector:
+            ca_cert: ((metricsserver_ca.ca))
+            client_cert: ((metricsserver_client.certificate))
+            client_key: ((metricsserver_client.private_key))
+            host: metricsserver.service.cf.internal
+            port: 6103
+          metrics_forwarder:
+            host: autoscalermetrics.((system_domain))
+          public_api:
+            server:
+              port: 6101
+          scaling_engine:
+            ca_cert: ((scalingengine_ca.ca))
+            client_cert: ((scalingengine_client.certificate))
+            client_key: ((scalingengine_client.private_key))
+          scheduler:
+            ca_cert: ((scheduler_ca.ca))
+            client_cert: ((scheduler_client.certificate))
+            client_key: ((scheduler_client.private_key))
+          use_buildin_mode: false
+        binding_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        binding_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+        cf:
+          api: https://api.((system_domain))
+          client_id: ((cf_client_id))
+          grant_type: client_credentials
+          secret: ((cf_client_secret))
+          skip_ssl_validation: ((skip_ssl_validation))
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        policy_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+    release: app-autoscaler
+  - name: metricsforwarder
+    properties:
+      autoscaler:
+        metricsforwarder:
+          cache_cleanup_interval: 6h
+          cache_ttl: 900s
+          health:
+            password: ((autoscaler_metricsforwarder_health_password))
+            port: 6403
+            username: metricsforwarder
+          logging:
+            level: info
+          loggregator:
+            metron_address: 127.0.0.1:3458
+            tls:
+              ca_cert: ((loggregator_tls_agent.ca))
+              cert: ((loggregator_tls_agent.certificate))
+              key: ((loggregator_tls_agent.private_key))
+          policy_poller_interval: 60s
+          require_consule: false
+          server:
+            port: 6201
+        policy_db:
+          connection_config:
+            connection_max_lifetime: 60s
+            max_idle_connections: 10
+            max_open_connections: 100
+          databases:
+          - name: autoscaler
+            tag: default
+          db_scheme: postgres
+          port: 5432
+          roles:
+          - name: postgres
+            password: ((database_password))
+            tag: default
+          sslmode: verify-full
+          tls:
+            ca: ((postgres_ca.ca))
+            certificate: ((postgres_server.certificate))
+            private_key: ((postgres_server.private_key))
+        policy_db_connection_config:
+          connection_max_lifetime: 60s
+          max_idle_connections: 10
+          max_open_connections: 100
+    release: app-autoscaler
+  - consumes:
+      nats:
+        deployment: dev-cf
+        from: nats
+    name: route_registrar
+    properties:
+      route_registrar:
+        routes:
+        - name: api_server
+          port: 6101
+          registration_interval: 20s
+          tags:
+            component: api_server
+          uris:
+          - autoscaler.((system_domain))
+        - name: autoscaler_service_broker
+          port: 6102
+          registration_interval: 20s
+          tags:
+            component: autoscaler_service_broker
+          uris:
+          - autoscalerservicebroker.((system_domain))
+        - name: autoscaler_metrics_forwarder
+          port: 6201
+          registration_interval: 20s
+          tags:
+            component: autoscaler_metrics_forwarder
+          uris:
+          - autoscalermetrics.((system_domain))
+        - name: autoscaler_metricsforwarder_health
+          port: 6403
+          registration_interval: 20s
+          tags:
+            component: autoscaler_metricsforwarder_health
+          uris:
+          - autoscaler-metricsforwarder.((system_domain))
+    release: routing
+  - consumes:
+      doppler:
+        deployment: dev-cf
+        from: doppler
+    name: loggregator_agent
+    properties:
+      loggregator:
+        tls:
+          agent:
+            cert: ((loggregator_tls_agent.certificate))
+            key: ((loggregator_tls_agent.private_key))
+          ca_cert: ((loggregator_ca.certificate))
+    release: loggregator-agent
+  name: asapi
+  networks:
+  - name: REDACTED
+  stemcell: default
+  update:
+    max_in_flight: 1
+    serial: true
+  vm_type: minimal
+kit:
+  features:
+  - postgres
+  name: cf-app-autoscaler
+  version: 4.0.2
+meta:
+  cf:
+    deployment_name: dev-cf
+    exodus: /secret/exodus/dev/cf
+  vault: /secret/dev/cf-app-autoscaler
+name: dev-cf-app-autoscaler
+networks:
+- name: default
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-0ea631cc3ad19e04f
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.16.1
+    range: 10.4.16.0/24
+    reserved:
+    - 10.4.16.0-10.4.16.5
+    - 10.4.16.245-10.4.16.254
+    static:
+    - 10.4.16.6-10.4.16.16
+  - azs:
+    - z2
+    cloud_properties:
+      subnet: subnet-09a05edb82702379b
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.17.1
+    range: 10.4.17.0/24
+    reserved:
+    - 10.4.17.0-10.4.17.5
+    static:
+    - 10.4.17.6-10.4.17.16
+  - azs:
+    - z3
+    cloud_properties:
+      subnet: subnet-0dd034854c197dc41
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.18.1
+    range: 10.4.18.0/24
+    reserved:
+    - 10.4.18.0-10.4.18.5
+    static:
+    - 10.4.18.6-10.4.18.16
+  type: manual
+- name: compilation
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-0ea631cc3ad19e04f
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.16.1
+    range: 10.4.16.0/24
+    reserved:
+    - 10.4.16.0-10.4.16.244
+  type: manual
+- name: cf-db
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-03720ac266d128f29
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.29.1
+    range: 10.4.29.0/28
+    reserved:
+    - 10.4.29.0-10.4.29.3
+    static:
+    - 10.4.29.4-10.4.29.14
+  - azs:
+    - z2
+    cloud_properties:
+      subnet: subnet-015b5284fb46c07e6
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.29.17
+    range: 10.4.29.16/28
+    reserved:
+    - 10.4.29.16-10.4.29.19
+    static:
+    - 10.4.29.20-10.4.29.30
+  - azs:
+    - z3
+    cloud_properties:
+      subnet: subnet-05dcf16f08f546160
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.29.33
+    range: 10.4.29.32/28
+    reserved:
+    - 10.4.29.32-10.4.29.35
+    static:
+    - 10.4.29.36-10.4.29.46
+  type: manual
+- name: cf-edge
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-0bdaf27eb328f7e4d
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.62.1
+    range: 10.4.62.0/25
+    reserved:
+    - 10.4.62.0-10.4.62.3
+    static:
+    - 10.4.62.4-10.4.62.16
+  - azs:
+    - z2
+    cloud_properties:
+      subnet: subnet-048560ab22b7c345f
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.62.129
+    range: 10.4.62.128/25
+    reserved:
+    - 10.4.62.128-10.4.62.131
+    static:
+    - 10.4.62.132-10.4.17.144
+  type: manual
+- name: cf-core
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-0a00811172726ce3b
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.20.1
+    range: 10.4.20.0/24
+    reserved:
+    - 10.4.20.0-10.4.20.5
+    static:
+    - 10.4.20.6-10.4.20.16
+  - azs:
+    - z2
+    cloud_properties:
+      subnet: subnet-03e4614c67b6af3d5
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.21.1
+    range: 10.4.21.0/24
+    reserved:
+    - 10.4.21.0-10.4.21.5
+    static:
+    - 10.4.21.6-10.4.21.16
+  - azs:
+    - z3
+    cloud_properties:
+      subnet: subnet-04ecdc31ba8c3d685
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.22.1
+    range: 10.4.22.0/24
+    reserved:
+    - 10.4.22.0-10.4.22.5
+    static:
+    - 10.4.22.6-10.4.22.16
+  type: manual
+- name: cf-runtime
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-08f6940f71c779a15
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.23.1
+    range: 10.4.23.0/24
+    reserved:
+    - 10.4.23.0-10.4.23.5
+    static:
+    - 10.4.23.6-10.4.23.16
+  - azs:
+    - z2
+    cloud_properties:
+      subnet: subnet-0964231d662ce7e9b
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.24.1
+    range: 10.4.24.0/24
+    reserved:
+    - 10.4.24.0-10.4.24.5
+    static:
+    - 10.4.24.6-10.4.24.16
+  - azs:
+    - z3
+    cloud_properties:
+      subnet: subnet-0e513e543403b53ac
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.25.1
+    range: 10.4.25.0/24
+    reserved:
+    - 10.4.25.0-10.4.25.5
+    static:
+    - 10.4.25.6-10.4.25.16
+  type: manual
+- name: blacksmith
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-062565d28649eeb00
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.26.1
+    range: 10.4.26.0/24
+    reserved:
+    - 10.4.26.0-10.4.26.5
+    - 10.4.26.245-10.4.26.254
+    static:
+    - 10.4.26.6-10.4.26.16
+  - azs:
+    - z2
+    cloud_properties:
+      subnet: subnet-0d10710c119782f5f
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.27.1
+    range: 10.4.27.0/24
+    reserved:
+    - 10.4.27.0-10.4.27.5
+    static:
+    - 10.4.27.6-10.4.27.16
+  - azs:
+    - z3
+    cloud_properties:
+      subnet: subnet-06fb1168c8fba4e45
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.28.1
+    range: 10.4.28.0/24
+    reserved:
+    - 10.4.28.0-10.4.28.5
+    static:
+    - 10.4.28.6-10.4.28.16
+  type: manual
+params:
+  cf_core_network: REDACTED
+  cf_deployment_env: dev
+  cf_deployment_type: cf
+  cf_system_domain: REDACTED
+  network: REDACTED
+releases:
+- name: app-autoscaler
+  sha1: 5eb42cf62bd9b084cd25a13be6de11d843e8dbc8
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/app-autoscaler-release?v=5.3.2
+  version: 5.3.2
+- name: postgres
+  sha1: 24d2e2887a45258b71bc40577c0f406180e47701
+  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=29
+  version: "29"
+- name: bosh-dns-aliases
+  sha1: b0d0a0350ed87f1ded58b2ebb469acea0e026ccc
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-aliases-release?v=0.0.3
+  version: 0.0.3
+- name: routing
+  sha1: edb2f822ca5bbe579a179abfa4b053dc9c99224f
+  url: https://bosh.io/d/github.com/cloudfoundry/routing-release?v=0.223.0
+  version: 0.223.0
+- name: loggregator-agent
+  sha1: bf723af956a61c7b51db0ba535c871bad24dd289
+  url: https://bosh.io/d/github.com/cloudfoundry/loggregator-agent-release?v=3.9
+  version: "3.9"
+- name: bpm
+  sha1: sha256:031cf5600158f44762c747a1f8648b7cebca876d4297dd9e2ce3b51b36ccd476
+  url: https://bosh.io/d/github.com/cloudfoundry/bpm-release?v=1.1.9
+  version: 1.1.9
+stemcells:
+- alias: default
+  os: ubuntu-bionic
+  version: latest
+update:
+  canaries: 1
+  canary_watch_time: 1000-300000
+  max_in_flight: 1
+  update_watch_time: 1000-300000
+variables:
+- name: database_password
+  type: password
+- name: autoscaler_service_broker_password
+  type: password
+- name: autoscaler_scheduler_health_password
+  type: password
+- name: autoscaler_eventgenerator_health_password
+  type: password
+- name: autoscaler_metricsforwarder_health_password
+  type: password
+- name: autoscaler_metricsgateway_health_password
+  type: password
+- name: autoscaler_metricsserver_health_password
+  type: password
+- name: autoscaler_operator_health_password
+  type: password
+- name: autoscaler_scalingengine_health_password
+  type: password
+- name: scalingengine_ca
+  options:
+    common_name: scalingengineCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: scalingengine_server
+  options:
+    alternative_names:
+    - scalingengine.service.cf.internal
+    ca: scalingengine_ca
+    common_name: scalingengine.service.cf.internal
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: scalingengine_client
+  options:
+    ca: scalingengine_ca
+    common_name: scalingengine client
+    extended_key_usage:
+    - client_auth
+  type: certificate
+- name: eventgenerator_ca
+  options:
+    common_name: eventgeneratorCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: eventgenerator_server
+  options:
+    alternative_names:
+    - eventgenerator.service.cf.internal
+    ca: eventgenerator_ca
+    common_name: eventgenerator.service.cf.internal
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: eventgenerator_client
+  options:
+    ca: eventgenerator_ca
+    common_name: eventgenerator client
+    extended_key_usage:
+    - client_auth
+  type: certificate
+- name: apiserver_ca
+  options:
+    common_name: apiserverCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: apiserver_server
+  options:
+    alternative_names:
+    - apiserver.service.cf.internal
+    ca: apiserver_ca
+    common_name: apiserver.service.cf.internal
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: apiserver_public_ca
+  options:
+    common_name: apiserverpublicCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: apiserver_public_server
+  options:
+    alternative_names:
+    - autoscaler.((system_domain))
+    ca: apiserver_public_ca
+    common_name: autoscaler.((system_domain))
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: apiserver_client
+  options:
+    ca: apiserver_ca
+    common_name: apiserver client
+    extended_key_usage:
+    - client_auth
+  type: certificate
+- name: servicebroker_ca
+  options:
+    common_name: servicebrokerCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: servicebroker_server
+  options:
+    alternative_names:
+    - servicebroker.service.cf.internal
+    ca: servicebroker_ca
+    common_name: servicebroker.service.cf.internal
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: servicebroker_client
+  options:
+    ca: servicebroker_ca
+    common_name: servicebroker client
+    extended_key_usage:
+    - client_auth
+  type: certificate
+- name: servicebroker_public_ca
+  options:
+    common_name: servicebrokerCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: servicebroker_public_server
+  options:
+    alternative_names:
+    - autoscalerservicebroker.((system_domain))
+    ca: servicebroker_public_ca
+    common_name: autoscalerservicebroker.((system_domain))
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: scheduler_ca
+  options:
+    common_name: schedulerCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: scheduler_server
+  options:
+    alternative_names:
+    - autoscalerscheduler.service.cf.internal
+    ca: scheduler_ca
+    common_name: autoscalerscheduler.service.cf.internal
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: scheduler_client
+  options:
+    ca: scheduler_ca
+    common_name: scheduler client
+    extended_key_usage:
+    - client_auth
+  type: certificate
+- name: metricsserver_ca
+  options:
+    common_name: metricsserverCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: metricsserver_server
+  options:
+    alternative_names:
+    - metricsserver.service.cf.internal
+    - '*.asmetrics.REDACTED.dev-cf-app-autoscaler.bosh'
+    ca: metricsserver_ca
+    common_name: metricsserver.service.cf.internal
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+- name: metricsserver_client
+  options:
+    ca: metricsserver_ca
+    common_name: metricsserver client
+    extended_key_usage:
+    - client_auth
+  type: certificate
+- name: postgres_ca
+  options:
+    common_name: postgresCA
+    duration: 3650
+    is_ca: true
+  type: certificate
+- name: postgres_server
+  options:
+    alternative_names:
+    - autoscalerpostgres.service.cf.internal
+    ca: postgres_ca
+    common_name: autoscalerpostgres.service.cf.internal
+    extended_key_usage:
+    - client_auth
+    - server_auth
+  type: certificate
+vm_extensions:
+- cloud_properties:
+    ephemeral_disk:
+      size: 102400
+      type: gp3
+  name: 100GB_ephemeral_disk
+- cloud_properties:
+    ephemeral_disk:
+      size: 51200
+      type: gp3
+  name: 50GB_ephemeral_disk
+- cloud_properties:
+    elbs:
+    - snw-dev-cf-elb
+  name: cf-router-network-properties
+- cloud_properties:
+    elbs:
+    - dev-cf-tcp-lb
+  name: cf-tcp-router-network-properties
+- name: diego-ssh-proxy-network-properties
+vm_types:
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 32768
+      type: gp3
+    instance_type: t3.medium
+  name: api
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: as-api
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: as-broker
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: as-collector
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: as-engine
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: as-operator
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: as-scaler
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: as-scheduler
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.small
+  name: bbs
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.medium
+  name: blobstore
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 24576
+      type: gp3
+    instance_type: t3.medium
+  name: bosh
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: cc-worker
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 65536
+      type: gp3
+    instance_type: t3.medium
+  name: compilation
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 65536
+      type: gp3
+    instance_type: t3.medium
+  name: concourse-worker
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.medium
+  name: credhub
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: default
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 262144
+      type: gp3
+    instance_type: t3.medium
+  name: diego-cell
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 32768
+      type: gp3
+    instance_type: t3.medium
+  name: diego-api
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 32768
+      type: gp3
+    instance_type: t3.medium
+  name: doppler
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: errand
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: haproxy
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 32768
+      type: gp3
+    instance_type: t3.medium
+  name: large
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.medium
+  name: log-api
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.small
+  name: medium
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.medium
+  name: minimal
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: nats
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 32768
+      type: gp3
+    instance_type: t3.medium
+  name: postgres
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: router
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: scheduler
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.small
+  name: small
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.small
+  name: small-cf
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 24576
+      type: gp3
+    instance_type: t3.medium
+  name: small-highmem
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.medium
+  name: syslogger
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 8192
+      type: gp3
+    instance_type: t3.small
+  name: tcp-router
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 81920
+      type: gp3
+    instance_type: t3.medium
+  name: thunder-dome
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 16384
+      type: gp3
+    instance_type: t3.medium
+  name: uaa
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.medium
+  name: blacksmith
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.small
+  name: blacksmith-redis-small
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.medium
+  name: blacksmith-redis-medium
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.large
+  name: blacksmith-redis-large
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.small
+  name: blacksmith-rabbitmq-medium
+- cloud_properties:
+    ephemeral_disk:
+      encrypted: true
+      size: 10240
+      type: gp3
+    instance_type: t3.medium
+  name: blacksmith-rabbitmq-large
