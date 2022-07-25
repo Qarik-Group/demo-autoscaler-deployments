@@ -9,7 +9,7 @@ pipeline:
 
   slack:
     channel: '#concourse'
-    webhook: 'https://hooks.slack.com/services/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'
+    webhook: (( vault "concourse/demo/autoscaler/slack:webhook" ))
 
 #  email:
 #    stanza: here
@@ -45,6 +45,44 @@ pipeline:
     default: |+
       auto *dev
       dev -> uswest2demo
+
+#jobs:
+#- name: testflight
+#  public: false
+#  serial: true
+#  serial_groups: [genesis-ci]
+#  plan:
+#  - do:
+#    - in_parallel:
+#      - { get: git, trigger: true,  passed: [dev-cf-app-autoscaler] }
+#      - { get: git-ci }
+#    - task: testflights
+#      file: git-ci/ci/tasks/test-flight/task.yml
+#      params:
+#        GENESIS_HONOR_ENV:    1
+#        GIT_NAME:             (( grab meta.git.name ))
+#        GIT_EMAIL:            (( grab meta.git.email ))
+#        VAULT_URI:            (( grab meta.vault.url ))
+#        VAULT_TOKEN:          (( grab meta.vault.token ))
+#        KIT_SHORTNAME:        (( grab meta.kit ))
+#        BOSH_ENVIRONMENT:     (( grab meta.bosh.uri ))
+#        BOSH_CA_CERT:         (( grab meta.bosh.cacert ))
+#        BOSH_CLIENT:          (( grab meta.bosh.username ))
+#        BOSH_CLIENT_SECRET:   (( grab meta.bosh.password ))
+#    on_success:
+#      put: notify
+#      params:
+#        topic:   (( concat meta.shout.topic "-$BUILD_JOB_NAME" ))
+#        message: tests job '$BUILD_JOB_NAME' succeeded.
+#        ok:      yes
+#        link:    (( grab meta.shout.links.build ))
+#    on_failure:
+#      put: notify
+#      params:
+#        topic:   (( concat meta.shout.topic "-$BUILD_JOB_NAME" ))
+#        message: tests job '$BUILD_JOB_NAME' failed.
+#        ok:      no
+#        link:    (( grab meta.shout.links.build ))
 
     # genesis repipe onprem          ; if target is 'onprem'
     # genesis repipe -t ci onprem    ; if it is 'ci' instead
