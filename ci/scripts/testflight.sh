@@ -8,3 +8,6 @@ header() {
 	echo $*
 	echo
 }
+
+header "Testing addons..."
+genesis do dev-cf-app-autoscaler list
