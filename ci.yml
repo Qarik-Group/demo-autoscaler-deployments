@@ -61,29 +61,24 @@ groups:
   - ((append))
   - testflight
 
+resources:
+- name: dev-changes
+  source:
+    paths:
+    - ((append))
+    - ci
+
+
 jobs:
 - name: testflight
   plan:
   - do:
     - in_parallel:
         steps:
-        - get: uswest2demo-changes
+        - get: dev-changes
           trigger: true
-        - get: uswest2demo-cache
           passed:
           - dev-cf-app-autoscaler
           trigger: true
-    - task: test-add-ons
-      config:
-        platform: linux
-        image_resource:
-          name: ""
-          source:
-            repository: starkandwayne/concourse
-            tag: latest
-          type: registry-image
-        inputs:
-        - name: uswest2demo-changes
-        - name: uswest2demo-cache
-        run:
-          path: ci/scripts/testflight.sh
+    - task: test-addons
+      file: dev-changes/ci/tasks/test-addons.yml
