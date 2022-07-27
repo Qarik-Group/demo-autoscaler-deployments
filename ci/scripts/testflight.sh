@@ -38,5 +38,3 @@ genesis do $BOSH_DIRECTOR -- bind-autoscaler
 
 header "Cleaning up for future deployments ..."
 cf delete-service-broker autoscaler -f
-cleanup $BOSH_DIRECTOR-$KIT_SHORTNAME
-safe rm -rf secret/exodus/$BOSH_DIRECTOR/$KIT_SHORTNAME``
