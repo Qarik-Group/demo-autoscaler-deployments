@@ -5,21 +5,14 @@ pipeline:
     repo:  demo-autoscaler-deployments
     private_key: (( vault "concourse/demo/autoscaler/github:private_key" ))
 
-#  notifications: parallel
-
   slack:
     channel: '#concourse'
     webhook: (( vault "concourse/demo/autoscaler/slack:webhook" ))
-
-#  email:
-#    stanza: here
 
   vault:
     url:    https://10.4.1.7
     verify: no
 
-#  locker:
-    
 
   boshes:
     dev:
@@ -34,8 +27,6 @@ pipeline:
       username: admin
       password: (( vault "secret/uswest2demo/bosh/users/admin:password" ))
 
-#  smoke-tests: run-my-smoke-tests
-#  tagged: yes
 
   layouts:
     # genesis repipe                 ; if target is 'default'
@@ -44,23 +35,14 @@ pipeline:
       auto *dev
       dev -> uswest2demo
 
-
-#jobs:
-#- name: dev-cf-app-autoscaler
-#  plan:
-#  - do:
-#    - task: bosh-deploy
-#      config:
-#        run:
-#        - ((append))
-#        -  path: ci/scripts/testflight.sh
-
+# adds testflight to the cf-app-autoscaler-platform-pipeline
 groups:
 - name: cf-app-autoscaler-platform-pipeline
   jobs:
   - ((append))
   - testflight
 
+# adds the ci directtory to the resources available for dev-changes
 resources:
 - name: dev-changes
   source:
@@ -68,27 +50,27 @@ resources:
     - ((append))
     - ci
 
-
+# creates the testflight job. Comments point out information that needs updating when names change
 jobs:
 - name: testflight
   plan:
   - do:
     - in_parallel:
         steps:
-        - get: dev-changes
+        - get: dev-changes                                                    # is composed by the bosh director name + -changes i.e. dev + -changes
           trigger: true
           passed:
-          - dev-cf-app-autoscaler
+          - dev-cf-app-autoscaler                                             # is composed by the bosh director name + kit_shortname i.e. dev + -cf-app-autoscaler
           trigger: true
     - task: test-addons
       file: dev-changes/ci/tasks/test-addons.yml
       vars:
-        BOSH_DIRECTOR:  dev
-        CF_API:         (( vault "secret/exodus/dev/cf:api_domain" ))
-        CF_USERNAME:    (( vault "secret/exodus/dev/cf:admin_username" ))
-        CF_PASSWORD:    (( vault "secret/exodus/dev/cf:admin_password" ))
-        GIT_DIRECTORY:  dev-changes # matches the - get step name above
+        BOSH_DIRECTOR:  dev                                                               # sets the bosh director's name
+        CF_API:         (( vault "secret/exodus/dev/cf:api_domain" ))                     # Cf information path rely on the path
+        CF_USERNAME:    (( vault "secret/exodus/dev/cf:admin_username" ))                 # created by the bosh director storing
+        CF_PASSWORD:    (( vault "secret/exodus/dev/cf:admin_password" ))                 # the cf credentials
+        GIT_DIRECTORY:  dev-changes                                                       # matches the `- get` step name above
         KIT_SHORTNAME:  cf-app-autoscaler
-        VAULT_ADDR:     https://10.4.1.7
-        VAULT_ROLE:     (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))
-        VAULT_SECRET:   (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))
+        VAULT_ADDR:     https://10.4.1.7                                                  # the vault addess holding secrets
+        VAULT_ROLE:     (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))       # concourse approles's default path is used
+        VAULT_SECRET:   (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))   # may need updating if another is used
