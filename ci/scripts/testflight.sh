@@ -20,6 +20,9 @@ safe target vault "$VAULT_ADDR" -k
 export VAULT_ROLE_ID=$VAULT_ROLE
 export VAULT_SECRET_ID=$VAULT_SECRET
 
+header "Installing cf-targets plugin"
+cf install-plugin Targets -f
+
 header "Listing addons..."
 genesis do $BOSH_DIRECTOR list
 
