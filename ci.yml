@@ -85,6 +85,7 @@ jobs:
       vars:
         BOSH_DIRECTOR:  dev
         GIT_DIRECTORY:  dev-changes # matches the - get step name above
+        KIT_SHORTNAME:  cf-app-autoscaler
         VAULT_ADDR:     https://10.4.1.7
         VAULT_ROLE:     (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))
         VAULT_SECRET:   (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))

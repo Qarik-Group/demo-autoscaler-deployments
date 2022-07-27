@@ -15,6 +15,7 @@ params:
   VAULT_SECRET:   ((VAULT_SECRET))
   GIT_DIRECTORY:  ((GIT_DIRECTORY))
   BOSH_DIRECTOR:  ((BOSH_DIRECTOR))
+  KIT_SHORTNAME:  ((KIT_SHORTNAME))
 
 run:
   path: ((GIT_DIRECTORY))/ci/scripts/testflight.sh

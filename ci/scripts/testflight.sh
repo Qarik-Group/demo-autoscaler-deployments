@@ -26,6 +26,11 @@ cf install-plugin Targets -f
 header "Listing addons..."
 genesis do $BOSH_DIRECTOR list
 
+header "Cleaning up for future deployments ..."
+cf delete-service-broker autoscaler -f
+cleanup $BOSH_DIRECTOR-$KIT_SHORTNAME
+safe rm -rf secret/exodus/$BOSH_DIRECTOR/$KIT_SHORTNAME``
+
 header "Testing addons..."
 genesis do $BOSH_DIRECTOR -- setup-cf-plugin -f
 genesis do $BOSH_DIRECTOR -- bind-autoscaler
