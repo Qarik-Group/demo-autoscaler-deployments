@@ -9,5 +9,10 @@ image_resource:
 inputs:
 - name: dev-changes
 
+params:
+  VAULT_ADDR: ((VAULT_ADDR))
+  VAULT_ROLE: ((VAULT_ROLE))
+  VAULT_SECRET: ((VAULT_SECRET))
+
 run:
   path: dev-changes/ci/scripts/testflight.sh
