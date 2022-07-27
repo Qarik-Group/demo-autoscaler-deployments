@@ -16,6 +16,9 @@ params:
   GIT_DIRECTORY:  ((GIT_DIRECTORY))
   BOSH_DIRECTOR:  ((BOSH_DIRECTOR))
   KIT_SHORTNAME:  ((KIT_SHORTNAME))
+  CF_API:         ((CF_API))
+  CF_USERNAME:    ((CF_USERNAME))
+  CF_PASSWORD:    ((CF_PASSWORD))
 
 run:
   path: ((GIT_DIRECTORY))/ci/scripts/testflight.sh
