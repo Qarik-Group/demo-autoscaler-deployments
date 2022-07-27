@@ -30,6 +30,7 @@ header "Adding required CF targets"
 cf api https://$CF_API --skip-ssl-validation
 export CF_USERNAME=$CF_USERNAME
 export CF_PASSWORD=$CF_PASSWORD
+cf auth
 
 header "Testing addons..."
 genesis do $BOSH_DIRECTOR -- setup-cf-plugin -f
