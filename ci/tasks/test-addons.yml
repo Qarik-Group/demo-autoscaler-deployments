@@ -7,12 +7,14 @@ image_resource:
   type: registry-image
 
 inputs:
-- name: dev-changes
+- name: ((GIT_DIRECTORY))
 
 params:
-  VAULT_ADDR: ((VAULT_ADDR))
-  VAULT_ROLE: ((VAULT_ROLE))
-  VAULT_SECRET: ((VAULT_SECRET))
+  VAULT_ADDR:     ((VAULT_ADDR))
+  VAULT_ROLE:     ((VAULT_ROLE))
+  VAULT_SECRET:   ((VAULT_SECRET))
+  GIT_DIRECTORY:  ((GIT_DIRECTORY))
+  BOSH_DIRECTOR:  ((BOSH_DIRECTOR))
 
 run:
-  path: dev-changes/ci/scripts/testflight.sh
+  path: ((GIT_DIRECTORY))/ci/scripts/testflight.sh
