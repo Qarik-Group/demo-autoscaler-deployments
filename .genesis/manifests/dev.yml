@@ -118,78 +118,67 @@ compilation:
   workers: 5
 disk_types:
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 2048
   name: default
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 2048
   name: consul
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 10240
   name: concourse
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 4096
   name: postgres
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 4096
   name: blobstore
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 1024
   name: vault
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 65536
   name: bosh
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 131072
   name: bosh-large
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 2048
   name: shield
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
+  disk_size: 51200
+  name: jumpbox
+- cloud_properties:
+    type: gp2
   disk_size: 51200
   name: prometheus
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 4096
   name: rabbitmq
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 5120
   name: 5GB
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 10240
   name: 10GB
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 100240
   name: 100GB
 - cloud_properties:
-    encrypted: true
-    type: gp3
+    type: gp2
   disk_size: 10240
   name: minio
 exodus:
@@ -200,7 +189,7 @@ exodus:
   bosh: dev
   cf_deployment_env: dev
   cf_deployment_type: cf
-  dated: 2022-07-27 10:38:36 +0000
+  dated: 2022-07-27 11:42:48 +0000
   deployer: unknown
   features: postgres
   is_director: false
@@ -1122,7 +1111,7 @@ networks:
     - 10.4.16.0-10.4.16.5
     - 10.4.16.245-10.4.16.254
     static:
-    - 10.4.16.6-10.4.16.16
+    - 10.4.16.6-10.4.16.15
   - azs:
     - z2
     cloud_properties:
@@ -1135,7 +1124,7 @@ networks:
     reserved:
     - 10.4.17.0-10.4.17.5
     static:
-    - 10.4.17.6-10.4.17.16
+    - 10.4.17.6-10.4.17.15
   - azs:
     - z3
     cloud_properties:
@@ -1148,7 +1137,46 @@ networks:
     reserved:
     - 10.4.18.0-10.4.18.5
     static:
-    - 10.4.18.6-10.4.18.16
+    - 10.4.18.6-10.4.18.15
+  type: manual
+- name: dr-vault
+  subnets:
+  - azs:
+    - z1
+    cloud_properties:
+      subnet: subnet-0ea631cc3ad19e04f
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.16.1
+    range: 10.4.16.0/24
+    reserved:
+    - 10.4.16.0-10.4.16.5
+    - 10.4.16.245-10.4.16.254
+    static: 10.4.16.16
+  - azs:
+    - z2
+    cloud_properties:
+      subnet: subnet-09a05edb82702379b
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.17.1
+    range: 10.4.17.0/24
+    reserved: 10.4.17.15
+    static: 10.4.17.16
+  - azs:
+    - z3
+    cloud_properties:
+      subnet: subnet-0dd034854c197dc41
+    dns:
+    - 1.1.1.1
+    - 8.8.4.4
+    gateway: 10.4.18.1
+    range: 10.4.18.0/24
+    reserved:
+    - 10.4.18.0-10.4.18.5
+    static: 10.4.18.16
   type: manual
 - name: compilation
   subnets:
@@ -1211,29 +1239,29 @@ networks:
   - azs:
     - z1
     cloud_properties:
-      subnet: subnet-0bdaf27eb328f7e4d
+      subnet: subnet-0c5dcce6ff1ff8ffc
     dns:
     - 1.1.1.1
     - 8.8.4.4
-    gateway: 10.4.62.1
-    range: 10.4.62.0/25
+    gateway: 10.4.19.1
+    range: 10.4.19.0/25
     reserved:
-    - 10.4.62.0-10.4.62.3
+    - 10.4.19.0-10.4.19.3
     static:
-    - 10.4.62.4-10.4.62.16
+    - 10.4.19.4-10.4.19.16
   - azs:
     - z2
     cloud_properties:
-      subnet: subnet-048560ab22b7c345f
+      subnet: subnet-0c0f58272fa0f3b17
     dns:
     - 1.1.1.1
     - 8.8.4.4
-    gateway: 10.4.62.129
-    range: 10.4.62.128/25
+    gateway: 10.4.19.129
+    range: 10.4.19.128/25
     reserved:
-    - 10.4.62.128-10.4.62.131
+    - 10.4.19.128-10.4.19.131
     static:
-    - 10.4.62.132-10.4.17.144
+    - 10.4.19.132-10.4.17.144
   type: manual
 - name: cf-core
   subnets:
@@ -1318,49 +1346,6 @@ networks:
     - 10.4.25.0-10.4.25.5
     static:
     - 10.4.25.6-10.4.25.16
-  type: manual
-- name: blacksmith
-  subnets:
-  - azs:
-    - z1
-    cloud_properties:
-      subnet: subnet-062565d28649eeb00
-    dns:
-    - 1.1.1.1
-    - 8.8.4.4
-    gateway: 10.4.26.1
-    range: 10.4.26.0/24
-    reserved:
-    - 10.4.26.0-10.4.26.5
-    - 10.4.26.245-10.4.26.254
-    static:
-    - 10.4.26.6-10.4.26.16
-  - azs:
-    - z2
-    cloud_properties:
-      subnet: subnet-0d10710c119782f5f
-    dns:
-    - 1.1.1.1
-    - 8.8.4.4
-    gateway: 10.4.27.1
-    range: 10.4.27.0/24
-    reserved:
-    - 10.4.27.0-10.4.27.5
-    static:
-    - 10.4.27.6-10.4.27.16
-  - azs:
-    - z3
-    cloud_properties:
-      subnet: subnet-06fb1168c8fba4e45
-    dns:
-    - 1.1.1.1
-    - 8.8.4.4
-    gateway: 10.4.28.1
-    range: 10.4.28.0/24
-    reserved:
-    - 10.4.28.0-10.4.28.5
-    static:
-    - 10.4.28.6-10.4.28.16
   type: manual
 params:
   cf_core_network: REDACTED
@@ -1612,314 +1597,221 @@ vm_extensions:
 - cloud_properties:
     ephemeral_disk:
       size: 102400
-      type: gp3
+      type: gp2
   name: 100GB_ephemeral_disk
 - cloud_properties:
     ephemeral_disk:
       size: 51200
-      type: gp3
+      type: gp2
   name: 50GB_ephemeral_disk
 - cloud_properties:
     elbs:
     - snw-dev-cf-elb
   name: cf-router-network-properties
-- cloud_properties:
-    elbs:
-    - dev-cf-tcp-lb
-  name: cf-tcp-router-network-properties
+- name: cf-tcp-router-network-properties
 - name: diego-ssh-proxy-network-properties
 vm_types:
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
+      size: 8192
+      type: gp2
+    instance_type: t3.small
+  name: default
+- cloud_properties:
+    ephemeral_disk:
       size: 32768
-      type: gp3
-    instance_type: t3.medium
-  name: api
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: as-api
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: as-broker
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: as-collector
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: as-engine
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: as-operator
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: as-scaler
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: as-scheduler
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.small
-  name: bbs
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.medium
-  name: blobstore
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 24576
-      type: gp3
-    instance_type: t3.medium
-  name: bosh
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.medium
-  name: cc-worker
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 65536
-      type: gp3
+      type: gp2
     instance_type: t3.medium
   name: compilation
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
-      size: 65536
-      type: gp3
-    instance_type: t3.medium
-  name: concourse-worker
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.medium
-  name: credhub
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
       size: 8192
-      type: gp3
-    instance_type: t3.medium
-  name: default
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 262144
-      type: gp3
-    instance_type: t3.medium
-  name: diego-cell
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 32768
-      type: gp3
-    instance_type: t3.medium
-  name: diego-api
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 32768
-      type: gp3
-    instance_type: t3.medium
-  name: doppler
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.medium
-  name: errand
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.medium
-  name: haproxy
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 32768
-      type: gp3
-    instance_type: t3.medium
-  name: large
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.medium
-  name: log-api
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 16384
-      type: gp3
-    instance_type: t3.small
-  name: medium
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 10240
-      type: gp3
-    instance_type: t3.medium
-  name: minimal
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.medium
-  name: nats
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 32768
-      type: gp3
-    instance_type: t3.medium
-  name: postgres
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.medium
-  name: router
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.medium
-  name: scheduler
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
+      type: gp2
     instance_type: t3.small
   name: small
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
-      size: 10240
-      type: gp3
+      size: 16384
+      type: gp2
     instance_type: t3.small
-  name: small-cf
+  name: medium
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
-      size: 24576
-      type: gp3
+      size: 32768
+      type: gp2
     instance_type: t3.medium
-  name: small-highmem
+  name: large
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
       size: 8192
-      type: gp3
+      type: gp2
+    instance_type: t3.small
+  name: haproxy
+- cloud_properties:
+    ephemeral_disk:
+      size: 32768
+      type: gp2
     instance_type: t3.medium
+  name: api
+- cloud_properties:
+    ephemeral_disk:
+      size: 8192
+      type: gp2
+    instance_type: t3.small
+  name: bbs
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: blobstore
+- cloud_properties:
+    ephemeral_disk:
+      size: 40960
+      type: gp2
+    instance_type: t3.large
+  name: cell
+- cloud_properties:
+    ephemeral_disk:
+      size: 36384
+      type: gp2
+    instance_type: t3.small
+  name: diego
+- cloud_properties:
+    ephemeral_disk:
+      size: 8192
+      type: gp2
+    instance_type: t3.small
+  name: doppler
+- cloud_properties:
+    ephemeral_disk:
+      size: 8192
+      type: gp2
+    instance_type: t3.small
+  name: errand
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: loggregator
+- cloud_properties:
+    ephemeral_disk:
+      size: 8192
+      type: gp2
+    instance_type: t3.small
+  name: nats
+- cloud_properties:
+    ephemeral_disk:
+      size: 32768
+      type: gp2
+    instance_type: t3.medium
+  name: postgres
+- cloud_properties:
+    ephemeral_disk:
+      size: 8192
+      type: gp2
+    instance_type: t3.small
+  name: router
+- cloud_properties:
+    ephemeral_disk:
+      size: 8192
+      type: gp2
+    instance_type: t3.small
   name: syslogger
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
-      size: 8192
-      type: gp3
-    instance_type: t3.small
-  name: tcp-router
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 81920
-      type: gp3
-    instance_type: t3.medium
-  name: thunder-dome
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
       size: 16384
-      type: gp3
-    instance_type: t3.medium
+      type: gp2
+    instance_type: t3.small
   name: uaa
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
       size: 10240
-      type: gp3
+      type: gp2
+    instance_type: t3.small
+  name: minimal
+- cloud_properties:
+    ephemeral_disk:
+      size: 10240
+      type: gp2
     instance_type: t3.medium
+  name: small-cf
+- cloud_properties:
+    ephemeral_disk:
+      size: 24576
+      type: gp2
+    instance_type: t3.large
+  name: small-highmem
+- cloud_properties:
+    ephemeral_disk:
+      size: 10240
+      type: gp2
+    instance_type: t3.small
   name: blacksmith
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
       size: 10240
-      type: gp3
-    instance_type: t3.small
-  name: blacksmith-redis-small
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 10240
-      type: gp3
+      type: gp2
     instance_type: t3.medium
-  name: blacksmith-redis-medium
+  name: jumpbox
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
-      size: 10240
-      type: gp3
+      size: 65536
+      type: gp2
+    instance_type: t3.medium
+  name: concourse-worker
+- cloud_properties:
+    ephemeral_disk:
+      size: 81920
+      type: gp2
     instance_type: t3.large
-  name: blacksmith-redis-large
+  name: thunder-dome
 - cloud_properties:
     ephemeral_disk:
-      encrypted: true
-      size: 10240
-      type: gp3
-    instance_type: t3.small
-  name: blacksmith-rabbitmq-medium
-- cloud_properties:
-    ephemeral_disk:
-      encrypted: true
-      size: 10240
-      type: gp3
+      size: 24576
+      type: gp2
     instance_type: t3.medium
-  name: blacksmith-rabbitmq-large
+  name: bosh
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: as-api
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: as-broker
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: as-scheduler
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: as-collector
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: as-scaler
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: as-engine
+- cloud_properties:
+    ephemeral_disk:
+      size: 16384
+      type: gp2
+    instance_type: t3.small
+  name: as-operator
