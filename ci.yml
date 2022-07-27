@@ -82,3 +82,8 @@ jobs:
           trigger: true
     - task: test-addons
       file: dev-changes/ci/tasks/test-addons.yml
+      vars:
+      VAULT_ADDR: https://10.4.1.7
+      VAULT_ROLE: (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))
+      VAULT_SECRET: (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))
+      VAULT_SKIP_VERIFY: "true"

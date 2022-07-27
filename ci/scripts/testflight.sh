@@ -9,5 +9,10 @@ header() {
 	echo
 }
 
+header "Changing to dev-changes directory"
+cd dev-changes
+pwd
+ls -la
+
 header "Testing addons..."
-genesis do dev-cf-app-autoscaler list
+genesis do dev list
