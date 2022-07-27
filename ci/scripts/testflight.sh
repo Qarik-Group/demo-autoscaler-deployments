@@ -20,5 +20,9 @@ safe target vault "$VAULT_ADDR" -k
 export VAULT_ROLE_ID=$VAULT_ROLE
 export VAULT_SECRET_ID=$VAULT_SECRET
 
-header "Listing" addons..."
+header "Listing addons..."
 genesis do $BOSH_DIRECTOR list
+
+header "Testing addons..."
+genesis do $BOSH_DIRECTOR -- setup-cf-plugin -f
+genesis do $BOSH_DIRECTOR -- bind-autoscaler
