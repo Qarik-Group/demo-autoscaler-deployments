@@ -189,7 +189,7 @@ exodus:
   bosh: dev
   cf_deployment_env: dev
   cf_deployment_type: cf
-  dated: 2022-07-27 11:42:48 +0000
+  dated: 2022-07-27 11:59:43 +0000
   deployer: unknown
   features: postgres
   is_director: false
@@ -1111,7 +1111,7 @@ networks:
     - 10.4.16.0-10.4.16.5
     - 10.4.16.245-10.4.16.254
     static:
-    - 10.4.16.6-10.4.16.15
+    - 10.4.16.6-10.4.16.16
   - azs:
     - z2
     cloud_properties:
@@ -1124,7 +1124,7 @@ networks:
     reserved:
     - 10.4.17.0-10.4.17.5
     static:
-    - 10.4.17.6-10.4.17.15
+    - 10.4.17.6-10.4.17.16
   - azs:
     - z3
     cloud_properties:
@@ -1137,7 +1137,7 @@ networks:
     reserved:
     - 10.4.18.0-10.4.18.5
     static:
-    - 10.4.18.6-10.4.18.15
+    - 10.4.18.6-10.4.18.16
   type: manual
 - name: dr-vault
   subnets:
@@ -1153,7 +1153,8 @@ networks:
     reserved:
     - 10.4.16.0-10.4.16.5
     - 10.4.16.245-10.4.16.254
-    static: 10.4.16.16
+    static:
+    - 10.4.16.17-10.4.16.27
   - azs:
     - z2
     cloud_properties:
@@ -1164,7 +1165,8 @@ networks:
     gateway: 10.4.17.1
     range: 10.4.17.0/24
     reserved: 10.4.17.15
-    static: 10.4.17.16
+    static:
+    - 10.4.17.17-10.4.17.27
   - azs:
     - z3
     cloud_properties:
@@ -1176,7 +1178,8 @@ networks:
     range: 10.4.18.0/24
     reserved:
     - 10.4.18.0-10.4.18.5
-    static: 10.4.18.16
+    static:
+    - 10.4.18.17-10.4.18.27
   type: manual
 - name: compilation
   subnets:
