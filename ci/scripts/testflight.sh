@@ -32,22 +32,22 @@ export CF_USERNAME=$CF_USERNAME
 export CF_PASSWORD=$CF_PASSWORD
 cf auth
 
-header "Testing autoscaler binding..."
+# Make sure app-autoscaler-plugin is available
 genesis do $BOSH_DIRECTOR -- setup-cf-plugin -f
+
+header "Testing generic binding process"
+genesis do $BOSH_DIRECTOR -- test-bind-autoscaler
 
 # Identify the presence of autoscaler service broker and either update or bind it
 autoscaler_registered=$(cf curl /v2/service_brokers|jq --arg env_name "autoscaler" -r '.resources[].entity | select(.name==$env_name) | .name')
 if [[ -n $autoscaler_registered ]] ; then
 
-	describe "Found and updating service broker autoscaler..."
+	header "Found and updating service broker autoscaler..."
 	genesis do $BOSH_DIRECTOR -- update-autoscaler
 
 else
 
-	describe "Creating service broker autoscaler..."
+	header "Creating service broker autoscaler..."
 	genesis do $BOSH_DIRECTOR -- bind-autoscaler
 
 fi
-
-# Test overall binding process
-genesis do $BOSH_DIRECTOR -- test-bind-autoscaler
