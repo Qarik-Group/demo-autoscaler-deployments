@@ -200,13 +200,13 @@ exodus:
   bosh: dev
   cf_deployment_env: dev
   cf_deployment_type: cf
-  dated: 2022-08-01 10:04:42 +0000
+  dated: 2022-08-01 10:29:56 +0000
   deployer: unknown
   features: postgres
   is_director: false
   kit_is_dev: false
   kit_name: cf-app-autoscaler
-  kit_version: 4.0.2
+  kit_version: 4.1.2
   service_broker_domain: autoscalerservicebroker.REDACTED
   service_broker_password: ((autoscaler_service_broker_password))
   service_broker_username: autoscaler_service_broker_user
@@ -1099,7 +1099,7 @@ kit:
   features:
   - postgres
   name: cf-app-autoscaler
-  version: 4.0.2
+  version: 4.1.2
 meta:
   cf:
     deployment_name: dev-cf
@@ -1370,9 +1370,9 @@ params:
   network: REDACTED
 releases:
 - name: app-autoscaler
-  sha1: 5eb42cf62bd9b084cd25a13be6de11d843e8dbc8
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/app-autoscaler-release?v=5.3.2
-  version: 5.3.2
+  sha1: 1e78968a12c576f0fc780f1c9b5571ba26ecfc48
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/app-autoscaler-release?v=5.4.0
+  version: 5.4.0
 - name: postgres
   sha1: 24d2e2887a45258b71bc40577c0f406180e47701
   url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=29
