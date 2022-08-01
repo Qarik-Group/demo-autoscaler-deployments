@@ -34,7 +34,5 @@ cf auth
 
 header "Testing addons..."
 genesis do $BOSH_DIRECTOR -- setup-cf-plugin -f
-genesis do $BOSH_DIRECTOR -- bind-autoscaler
-
-header "Cleaning up for future deployments ..."
-cf delete-service-broker autoscaler -f
+genesis do $BOSH_DIRECTOR -- test-bind-autoscaler
+genesis do $BOSH_DIRECTOR -- update-autoscaler
