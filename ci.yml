@@ -74,3 +74,14 @@ jobs:
         VAULT_ADDR:     https://10.4.1.7                                                  # the vault addess holding secrets
         VAULT_ROLE:     (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))       # concourse approles's default path is used
         VAULT_SECRET:   (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))   # may need updating if another is used
+
+#- name: notify-uswest2demo-cf-app-autoscaler-changes
+#  plan:
+#    - (( inline ))
+#    - in_parallel:
+#        steps:
+#          - (( merge on get ))
+#          - get: uswest2demo-cache
+#            passed:
+#              - (( append ))
+#              - testflight
