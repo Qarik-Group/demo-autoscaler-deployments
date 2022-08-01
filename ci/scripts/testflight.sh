@@ -47,5 +47,7 @@ else
 	describe "Creating service broker autoscaler..."
 	genesis do $BOSH_DIRECTOR -- bind-autoscaler
 
+fi
+
 # Test overall binding process
 genesis do $BOSH_DIRECTOR -- test-bind-autoscaler
