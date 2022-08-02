@@ -40,7 +40,7 @@ groups:
 - name: cf-app-autoscaler-platform-pipeline
   jobs:
   - ((append))
-  - testflight
+#  - testflight #required if the `test-addon`s task is run under the `testflight` job
 
 # adds the ci directtory to the resources available for dev-changes
 resources:
@@ -51,17 +51,42 @@ resources:
     - ci
 
 # creates the testflight job. Comments point out information that needs updating when names change
+##################
+# The example lines below have the task placed on a job of its own (testflight)
+# Given that we want the triggered jobs to depend on the task's success it has been moved and appended under `dev-cf-app-autoscaler`
+##################
+#jobs:
+#- name: testflight
+#  plan:
+#    - in_parallel:
+#        steps:
+#          - get: dev-changes                                                    # is composed by the bosh director name + -changes i.e. dev + -changes
+#            trigger: true
+#            passed:
+#              - dev-cf-app-autoscaler                                             # is composed by the bosh director name + kit_shortname i.e. dev + -cf-app-autoscaler
+#          - get: uswest2demo-cache
+#            trigger: true
+#            passed:
+#              - dev-cf-app-autoscaler
+#    - task: test-addons
+#      file: dev-changes/ci/tasks/test-addons.yml
+#      vars:
+#        BOSH_DIRECTOR:  dev                                                               # sets the bosh director's name
+#        CF_API:         (( vault "secret/exodus/dev/cf:api_domain" ))                     # Cf information path rely on the path
+#        CF_USERNAME:    (( vault "secret/exodus/dev/cf:admin_username" ))                 # created by the bosh director storing
+#        CF_PASSWORD:    (( vault "secret/exodus/dev/cf:admin_password" ))                 # the cf credentials
+#        GIT_DIRECTORY:  dev-changes                                                       # matches the `- get` step name above
+#        KIT_SHORTNAME:  cf-app-autoscaler
+#        VAULT_ADDR:     https://10.4.1.7                                                  # the vault addess holding secrets
+#        VAULT_ROLE:     (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))       # concourse approles's default path is used
+#        VAULT_SECRET:   (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))   # may need updating if another is used
+
+
 jobs:
-- name: testflight
+- name: dev-cf-app-autoscaler
   plan:
   - do:
-    - in_parallel:
-        steps:
-        - get: dev-changes                                                    # is composed by the bosh director name + -changes i.e. dev + -changes
-          trigger: true
-          passed:
-          - dev-cf-app-autoscaler                                             # is composed by the bosh director name + kit_shortname i.e. dev + -cf-app-autoscaler
-          trigger: true
+    - (( append ))
     - task: test-addons
       file: dev-changes/ci/tasks/test-addons.yml
       vars:
@@ -75,13 +100,3 @@ jobs:
         VAULT_ROLE:     (( vault "secret/exodus/ci/genesis-pipelines:approle-id" ))       # concourse approles's default path is used
         VAULT_SECRET:   (( vault "secret/exodus/ci/genesis-pipelines:approle-secret" ))   # may need updating if another is used
 
-#- name: notify-uswest2demo-cf-app-autoscaler-changes
-#  plan:
-#    - (( inline ))
-#    - in_parallel:
-#        steps:
-#          - (( merge on get ))
-#          - get: uswest2demo-cache
-#            passed:
-#              - (( append ))
-#              - testflight
