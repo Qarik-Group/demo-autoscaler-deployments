@@ -40,7 +40,7 @@ groups:
 - name: cf-app-autoscaler-platform-pipeline
   jobs:
   - ((append))
-#  - testflight #required if the `test-addon`s task is run under the `testflight` job
+#  - testflight #required if the `test-and-bind-broker task is run under the `testflight` job
 
 # adds the ci directtory to the resources available for dev-changes
 resources:
@@ -68,8 +68,8 @@ resources:
 #            trigger: true
 #            passed:
 #              - dev-cf-app-autoscaler
-#    - task: test-addons
-#      file: dev-changes/ci/tasks/test-addons.yml
+#    - task: test-and-bind-broker
+#      file: dev-changes/ci/tasks/test-and-bind-broker.yml
 #      vars:
 #        BOSH_DIRECTOR:  dev                                                               # sets the bosh director's name
 #        CF_API:         (( vault "secret/exodus/dev/cf:api_domain" ))                     # Cf information path rely on the path
@@ -87,8 +87,8 @@ jobs:
   plan:
   - do:
     - (( append ))
-    - task: test-addons
-      file: dev-changes/ci/tasks/test-addons.yml
+    - task: test-and-bind-broker
+      file: dev-changes/ci/tasks/test-and-bind-broker.yml
       vars:
         BOSH_DIRECTOR:  dev                                                               # sets the bosh director's name
         CF_API:         (( vault "secret/exodus/dev/cf:api_domain" ))                     # Cf information path rely on the path
